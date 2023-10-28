@@ -48,28 +48,44 @@ FILE *fptr;
 
 // }
 
-char process_line(const char *line_of_asm)
+char process_line(char *line_of_asm)
 {
-    
-    if (line_of_asm[0] == 'm')
+    // break the line of code into 3 parts 1. command 2. data type 3. data type
+    const char delimiters[] = " ,";
+    char *token;
+
+    // get first token
+    token = strtok(line_of_asm, delimiters);
+    int count = 0;
+    while(token != NULL)
     {
-        // call move function
-        // after we know this is a mov command we need to figure out what register 
-        // we work with or what place in memory we work with
-        // after that we need to know the addressing mode
-        // register addressing mode, immediate addressing mode, or indirect addressing mode
-        // char first_register[]
-        // char addressing_mode[2] = 
-        printf("m");
-    } 
-    else if (line_of_asm[0] == 'h') 
-    {
-        char call[] = "halt";
-        // call halt function
-        printf("h");
+        if (count == 0)
+        {
+            char command[5];
+            strcpy(command, token);
+            printf("first: %s\n", command);
+        }
+        else if (count == 1)
+        {
+            char* second_input = token;
+            printf("\nsecond: %s", second_input, "\n");
+        }
+        else if (count == 2)
+        {
+            char* third_input = token;
+            printf("\nthird: %s", third_input, "\n");
+        }
+
+        // get next token
+        token = strtok(NULL, delimiters);
+        count++;
     }
 
+    // Now that we have a working delimiter we need to assign each value
 
+    // If the command is move then 2. can be either a register or memory
+    // If the command is move then 3. can be either a register, memory, or a constant
+    
 }
 // create function for if it's a mov assembly call
 
@@ -89,7 +105,7 @@ void read_file()
         // if first three characters are mov call mov function and do that for each needed function
         // but first write the function of converting from decimal to binary
         process_line(line_of_asm);
-        printf("%s", line_of_asm);
+        // printf("%s", line_of_asm);
         
     }
     fclose(fptr);
