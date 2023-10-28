@@ -6,7 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
-// char ASM_FILE_NAME[ ] = "wilsonv.asm";
+char ASM_FILE_NAME[ ] = "wilsonv.asm";
 
 #define MAX 150			// strlen of simulators memory can be changed
 #define COL 7			// number of columns for output
@@ -38,15 +38,45 @@ struct Registers
 	int flag;
 }regis;
 
-// read file function
+// file pointer
 FILE *fptr;
 
+// move function
+// we need to know whether were trying to move a register or constant
+// char move(const char *addressing_mode)
+// {
+
+// }
+
+char process_line(const char *line_of_asm)
+{
+    
+    if (line_of_asm[0] == 'm')
+    {
+        // call move function
+        // after we know this is a mov command we need to figure out what register 
+        // we work with or what place in memory we work with
+        // after that we need to know the addressing mode
+        // register addressing mode, immediate addressing mode, or indirect addressing mode
+        // char first_register[]
+        // char addressing_mode[2] = 
+        printf("m");
+    } 
+    else if (line_of_asm[0] == 'h') 
+    {
+        char call[] = "halt";
+        // call halt function
+        printf("h");
+    }
+
+
+}
 // create function for if it's a mov assembly call
 
 
 void read_file()
 {
-    fptr = fopen("wilsonv.asm", "r"); 
+    fptr = fopen(ASM_FILE_NAME, "r"); 
     if (fptr == NULL)
     {
         perror("Unable to open file!");
@@ -58,7 +88,9 @@ void read_file()
     {
         // if first three characters are mov call mov function and do that for each needed function
         // but first write the function of converting from decimal to binary
+        process_line(line_of_asm);
         printf("%s", line_of_asm);
+        
     }
     fclose(fptr);
 }
