@@ -41,8 +41,12 @@ struct Registers
 // file pointer
 FILE *fptr;
 
+// function for converting hex to signed decimal
 
-void removeBrackets(char* part)
+
+// function for converting signed decimal to binary
+
+char* removeBrackets(char* part)
 {
     int i = 0;
     int j = 0;
@@ -57,6 +61,31 @@ void removeBrackets(char* part)
         i++;
     }
     part[j] = '\0';
+    return part;
+}
+
+char* split_plus(char *part)
+{
+    const char delimiter[] = "+";
+    char *token;
+    char first_part[100];
+    char second_part[100];
+    int count = 0;
+    while (token != NULL) 
+    {
+        if (count == 0)
+        {
+            strcpy(first_part, token);
+            printf("first_part: %s\n", first_part);
+        }
+        else if (count == 1)
+        {
+            strcpy(second_part, token);
+            printf("second_part: %s\n", second_part);
+        }
+        token = strtok(NULL, delimiter);
+        count++;
+    }
 }
 
 
@@ -78,10 +107,6 @@ void process_line(char *line_of_asm)
             strcpy(command, token);
             printf("first: %s\n", command);
         }
-        // now we need to be able to tell the data type of each 2nd and 3rd input
-        // first figure out how to tell if the data type is memory, this is the most complicated
-        // if it is memory you have to figure out if it references a register, hex or a operation
-        // between the two
         else if (count == 1)
         {
             char second_input[100];
@@ -90,11 +115,9 @@ void process_line(char *line_of_asm)
             // find if [] is contained
             if (second_input[0] == '[')
             {
-                printf("testing");
                 // this block of code is for if second_input is memory
-                removeBrackets(second_input);
-                printf("modified: %s\n", second_input);
-
+                char no_brack_second[100];
+                strcpy(no_brack_second, removeBrackets(second_input));
             }
         }
         else if (count == 2)
@@ -103,12 +126,17 @@ void process_line(char *line_of_asm)
             strcpy(third_input, token);
             printf("\nthird: %s", third_input, "\n");
             // find if [] is contained
-            if (strstr(third_input, "[]") != NULL)
+            if (third_input[0] == '[')
             {
-                // this block of code is for if second_input is memory
-                removeBrackets(third_input);
-                printf("modified: %s\n", third_input);
-                
+                // this block of code is for if third_input is memory
+                char no_brack_third[100];
+                strcpy(no_brack_third, removeBrackets(third_input));
+                // check for + operand
+                if (strchr(no_brack_third, '+'))
+                {
+                    // now we have to split the two values
+                }
+
             }
 
         }
